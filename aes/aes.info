@@ -1,0 +1,6 @@
+name = AES compatibility module
+description = Satisfy dependencies on AES, provides aes_encrypt/aes_decrypt.
+core = 7.x
+PHP = 5.4
+
+dependencies[] = real_aes
