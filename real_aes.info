@@ -2,3 +2,5 @@ name = Real AES
 description = "Library module for Defuse's PHP encryption library."
 core = 7.x
 PHP = 5.4
+
+dependencies[] = libraries
