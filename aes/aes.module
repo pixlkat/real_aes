@@ -37,7 +37,12 @@ if (!function_exists('aes_encrypt')) {
     // Load the library before throwing exceptions. This ensures defuse's
     // exception handler can strip the key when Ex\CannotPerformOpertion is
     // thrown.
-    libraries_load('php-encryption');
+    $library = libraries_load('php-encryption');
+
+    if (empty($library['loaded'])) {
+      // Throw a filtered exception.
+      throw new Ex\CannotPerformOperation('PHP-encryption library is not available.');
+    }
 
     if ($custom_cipher || $custom_implementation) {
       // Throw a filtered exception.
@@ -85,7 +90,12 @@ if (!function_exists('aes_decrypt')) {
     // Load the library before throwing exceptions. This ensures defuse's
     // exception handler can strip the key when Ex\CannotPerformOpertion is
     // thrown.
-    libraries_load('php-encryption');
+    $library = libraries_load('php-encryption');
+
+    if (empty($library['loaded'])) {
+      // Throw a filtered exception.
+      throw new Ex\CannotPerformOperation('PHP-encryption library is not available.');
+    }
 
     if ($custom_cipher || $custom_implementation) {
       // Throw a filtered exception.
