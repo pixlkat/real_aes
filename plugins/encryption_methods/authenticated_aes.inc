@@ -15,7 +15,7 @@ $plugin = real_aes_authenticated_aes_encrypt_encryption_methods();
 function real_aes_authenticated_aes_encrypt_encryption_methods() {
   return array(
     'title' => t('Authenticated AES'),
-    'description' => t('Authenticated AES-128.'),
+    'description' => t('Uses AES-128 in CBC mode. Verifies ciphertext integrity via Encrypt-then-MAC scheme using HMAC-SHA256.'),
     'encrypt callback' => '_real_aes_encryption_methods_authenticated_aes',
     'dependency callback' => '_real_aes_authenticated_aes_check_requirements',
   );

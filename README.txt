@@ -2,9 +2,11 @@
 
 ## Introduction
 
-Real AES is a library loader for the Defuse PHP-encryption library.
-It in addition provides partial API compatibility with the insecure AES module (via a submodule) to act as a replacement for use
-with other modules. Contrary to AES, this module will not accept keys that are too long or too small.
+Real AES provides an encryption method plugin for the Encrypt module (https://drupal.org/project/encrypt).
+It also serves as a library loader for the Defuse PHP-encryption library.
+
+Partial API compatibility with the insecure AES module (via a submodule) is provided to act as a replacement
+for use with other modules. Contrary to AES, this module will not accept keys that are too long or too small.
 
 Defuse PHP-encryption provides authenticated encryption via an Encrypt-then-MAC scheme. AES-128 CBC is the encryption
 algorithm, SHA-256 the hash algorithm for the HMAC. IV's are automatically and randomly generated. You do not need
@@ -24,7 +26,7 @@ By default:
 - Uses AES
 - Only one encryption mode
 - No IV reuse
-- Authenticated encryption (prevents ciphertext tampering attacks eg Padding Oracle "Vaudenay" attacks)
+- Authenticated encryption (prevents ciphertext tampering attacks eg the Padding Oracle "Vaudenay" attack)
 - No silent key replacement
 - No database keys
 - No generation of weak keys
@@ -39,10 +41,11 @@ PHP 5.4 with the openssl extension.
 The Defuse PHP-Encryption library from https://github.com/defuse/php-encryption. Install it as php-encryption in your
 libraries folder (eg sites/all/libraries/php-encryption).
 
-## Configuration
+## General configuration
 
-If you need the defuse php-encryption library, just enable Real AES. If you need aes_encrypt / aes_decrypt using a
-global key, enable the included AES submodule.
+If you need the defuse php-encryption library, or use the Encrypt plugin just enable Real AES and install the library.
+If you need aes_encrypt / aes_decrypt using a global key, enable the included AES submodule and follow the steps below
+to generate a default key.
 
 ### Generate a key
 
@@ -61,11 +64,26 @@ drush php-eval 'echo drupal_random_bytes(16);' > /path/to/aes.key
 
 $conf['real_aes_key_file'] = '/path/to/aes.key';
 
+## Encrypt plugin configuration
+
+Real AES adds the "Authenticated AES" encryption method on the "Encryption method settings" tab for Encrypt
+configurations.
+
+It is important to ensure a proper key. We suggest to use the "File" key provider, but generate the key yourself.
+
+dd if=/dev/urandom bs=16 count=1 > /path/to/encrypt_key.key
+
+or
+
+drush php-eval 'echo drupal_random_bytes(16);' > /path/to/encrypt_key.key
+
+Supply the key provider with the path to this file.
+
 ## Usage
 
-There is no user interface.
+1. Use the Authenticated AES encryption method with the Encrypt module (https://drupal.org/project/encrypt).
 
-1. If you do not require aes_encrypt and aes_decrypt, use this module as a Defuse PHP Encryption library loader.
+2. If you do not require aes_encrypt and aes_decrypt, use this module as a Defuse PHP Encryption library loader.
    In your own code, include the library with libraries_load('php-encryption'), then call Crypto::encrypt,
    Crypto::decrypt and Crypto::createNewRandomKey directly.
 
@@ -73,7 +91,7 @@ There is no user interface.
    * https://github.com/defuse/php-encryption for documentation,
    * https://github.com/defuse/php-encryption/blob/master/example.php for an example
 
-2. If necessary, enable the provided AES submodule. This is an API module exposing aes_encrypt and aes_decrypt
+3. If necessary, enable the provided AES submodule. This is an API module exposing aes_encrypt and aes_decrypt
 for partial API compatibility with modules depending on the insecure AES module.
 
 
