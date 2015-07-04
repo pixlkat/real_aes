@@ -21,3 +21,19 @@ function real_aes_libraries_info() {
     ),
   );
 }
+
+/**
+ * Load the defuse php encryption library.
+ *
+ * @return bool
+ */
+function real_aes_load_library() {
+  $library = libraries_load('php-encryption');
+  return !empty($library['loaded']);
+}
+
+function real_aes_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'encrypt') {
+    return 'plugins/' . $plugin;
+  }
+}
