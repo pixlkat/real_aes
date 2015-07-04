@@ -50,10 +50,10 @@ To generate a 128 bits random key, use the following command on the Unix CLI:
 
 dd if=/dev/urandom bs=16 count=1 > /path/to/aes.key
 
-This file MUST be stored outside of the docroot. Copy this file to an off-server, save backup. If you lose the key,
+This file MUST be stored outside of the docroot. Copy this file to an off-server, safe backup. If you lose the key,
 you will not be able to decrypt encrypted information in the database.
 
-If you do not have access to dd, generate the file using drush on a valid Drupal installation:
+If you do not have access to dd, generate the file using drush on a working Drupal installation:
 
 drush php-eval 'echo drupal_random_bytes(16);' > /path/to/aes.key
 
