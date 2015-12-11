@@ -36,7 +36,7 @@ By default:
 - No silent key replacement
 - No database keys
 - No generation of weak keys
-- Uses PKCS7 padding, allowing encryption and decryption of binary data
+- Unambiguous padding, allowing correct decryption of binary data ending in 0x00
 - Will not accept "keys" of incorrect length
 - No support for AES encryption of user passwords
 - Fails hard when there are problems with encryption or decryption
@@ -90,7 +90,7 @@ Supply the key provider with the path to this file.
 
 1. Use the Authenticated AES encryption method with the Encrypt module (https://drupal.org/project/encrypt).
 
-2. If you do not require aes_encrypt and aes_decrypt, use this module as a Defuse PHP Encryption library loader.
+2. If you implement encryption yourself, use this module as a Defuse PHP Encryption library loader.
    In your own code, include the library with libraries_load('php-encryption'), then call Crypto::encrypt,
    Crypto::decrypt and Crypto::createNewRandomKey directly.
 
@@ -103,10 +103,20 @@ for partial API compatibility with modules depending on the insecure AES module.
 
 ## Further reading
 
+* Encryption in PHP https://defuse.ca/secure-php-encryption.htm
+* Defuse php-encryption readme: https://github.com/defuse/php-encryption/blob/master/README.md
 * Authenticated encryption: https://en.wikipedia.org/wiki/Authenticated_encryption
 * CBC Block mode: https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_Block_Chaining_.28CBC.29
 * HMAC: https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
 * SHA-256: https://en.wikipedia.org/wiki/SHA-2
+
+## Key management
+
+Key storage on the webserver is one of the weak points of this system. Consider
+using Encrypt with a key management solution.
+
+One example is https://www.drupal.org/project/townsec_key . We have not reviewed
+this module or the system it connects with.
 
 ## Frequently given answers
 
@@ -125,4 +135,9 @@ working and fast quantum computer implementing Grover's algorithm.
 This module was created by LimoenGroen - https://limoengroen.nl - after carefully considering the various encryption
 modules and libraries.
 
-TODO: Patch encrypted_files to use Defuse PHP-encryption.
+The library doing the actual work, Defuse PHP encryption, is authored by
+Taylor Hornby and Scott Arciszewski.
+
+## Future plans:
+
+Patch the module encrypted_files to use Defuse PHP-encryption and properly derive a _key_ from a password.
