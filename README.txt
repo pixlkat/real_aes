@@ -9,7 +9,7 @@ Partial API compatibility with the insecure AES module (via a submodule) is prov
 for use with other modules. Contrary to AES, this module will not accept keys that are too long or too small.
 
 Defuse PHP-encryption provides authenticated encryption via an Encrypt-then-MAC scheme. AES-128 CBC is the symmetric
-encryption algorithm, SHA-256 the hash algorithm for the HMAC. IV's are automatically and randomly generated. You do \
+encryption algorithm, SHA-256 the hash algorithm for the HMAC. IV's are automatically and randomly generated. You do
 not need to manage the IV separately, as it is included in the ciphertext.
 
 Ciphertext format is: HMAC || iv || ciphertext
