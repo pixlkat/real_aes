@@ -8,16 +8,22 @@ It also serves as a library loader for the Defuse PHP-encryption library.
 Partial API compatibility with the insecure AES module (via a submodule) is provided to act as a replacement
 for use with other modules. Contrary to AES, this module will not accept keys that are too long or too small.
 
-Defuse PHP-encryption provides authenticated encryption via an Encrypt-then-MAC scheme. AES-128 CBC is the encryption
-algorithm, SHA-256 the hash algorithm for the HMAC. IV's are automatically and randomly generated. You do not need
-to manage the IV separately, as it is included in the ciphertext.
+Defuse PHP-encryption provides authenticated encryption via an Encrypt-then-MAC scheme. AES-128 CBC is the symmetric
+encryption algorithm, SHA-256 the hash algorithm for the HMAC. IV's are automatically and randomly generated. You do \
+not need to manage the IV separately, as it is included in the ciphertext.
 
 Ciphertext format is: HMAC || iv || ciphertext
 
 The HMAC verifies both IV and Ciphertext.
 
-Beware that AES compatibility is at API-level only, and then just partial. Existing messages cannot be decrypted, nor
+Beware that AES-module compatibility is at API-level only, and then just partial. Existing messages cannot be decrypted, nor
 is there an upgrade path.
+
+## Authenticated encryption
+
+Authenticated encryption ensures data integrity of the ciphertext. When decrypting, integrity is checked first. Further
+decrypting operations will only be executed when the integrity check passes.
+This prevents certain ciphertext attacks on AES CBC.
 
 ## Differences to the AES module:
 
@@ -30,20 +36,21 @@ By default:
 - No silent key replacement
 - No database keys
 - No generation of weak keys
-- PKCS7 padding
+- Uses PKCS7 padding, allowing encryption and decryption of binary data
 - Will not accept "keys" of incorrect length
 - No support for AES encryption of user passwords
 - Fails hard when there are problems with encryption or decryption
 
 ## Requirements
 
-PHP 5.4 with the openssl extension.
+PHP 5.4 or later with the openssl extension.
 The Defuse PHP-Encryption library from https://github.com/defuse/php-encryption. Install it as php-encryption in your
-libraries folder (eg sites/all/libraries/php-encryption).
+libraries folder (sites/all/libraries/php-encryption).
 
 ## General configuration
 
 If you need the defuse php-encryption library, or use the Encrypt plugin just enable Real AES and install the library.
+
 If you need aes_encrypt / aes_decrypt using a global key, enable the included AES submodule and follow the steps below
 to generate a default key.
 
@@ -94,6 +101,24 @@ Supply the key provider with the path to this file.
 3. If necessary, enable the provided AES submodule. This is an API module exposing aes_encrypt and aes_decrypt
 for partial API compatibility with modules depending on the insecure AES module.
 
+## Further reading
+
+* Authenticated encryption: https://en.wikipedia.org/wiki/Authenticated_encryption
+* CBC Block mode: https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_Block_Chaining_.28CBC.29
+* HMAC: https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
+* SHA-256: https://en.wikipedia.org/wiki/SHA-2
+
+## Frequently given answers
+
+Q Why not use AES-GCM?
+A This is currently not supported by the php openssl library.
+
+Q No AES-256?
+A No.
+
+Q But, why no AES-256??
+A You won't need it unless your threat model includes adversaries having a
+working and fast quantum computer implementing Grover's algorithm.
 
 ## Credits
 
