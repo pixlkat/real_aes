@@ -30,16 +30,15 @@ function real_aes_authenticated_aes_encrypt_encryption_methods() {
  * Callback for Encrypt implementation: Authenticated AES.
  *
  * This method uses the Real_AES loaded Defuse encryption library.
- * Base64 encoding is used by default,
- * unless disabled by setting 'base64' to FALSE in $options.
+ * Base64 encoding is used by default, unless disabled by setting
+ * 'base64' to FALSE in $options.
  */
 function _real_aes_encryption_methods_authenticated_aes($op, $text, $key, $options = array()) {
-  $processed_text = '';
   $disable_base64 = array_key_exists('base64', $options) && $options['base64'] == FALSE;
   // Check op.
   if ($op == 'decrypt') {
 
-    // Check if we are disabling base64 encoding
+    // Check if we are disabling base64 encoding.
     if (!$disable_base64) {
       $text = base64_decode($text);
     }
@@ -47,9 +46,11 @@ function _real_aes_encryption_methods_authenticated_aes($op, $text, $key, $optio
     if (real_aes_load_library()) {
       try {
         return Crypto::decrypt($text, $key);
-      } catch (Ex\CryptoTestFailed $ex) {
+      }
+      catch (Ex\CryptoTestFailed $ex) {
         return FALSE;
-      } catch (Ex\CannotPerformOperation $ex) {
+      }
+      catch (Ex\CannotPerformOperation $ex) {
         return FALSE;
       }
     }
@@ -61,13 +62,14 @@ function _real_aes_encryption_methods_authenticated_aes($op, $text, $key, $optio
       // Encrypt.
       try {
         $processed_text = Crypto::encrypt($text, $key);
-      } catch (Ex\CryptoTestFailed $ex) {
+      }
+      catch (Ex\CryptoTestFailed $ex) {
         return FALSE;
       } catch (Ex\CannotPerformOperation $ex) {
         return FALSE;
       }
 
-      // Check if we are disabling base64 encoding
+      // Check if we are disabling base64 encoding.
       if (!$disable_base64) {
         $processed_text = base64_encode($processed_text);
       }

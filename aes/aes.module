@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Enable to satisfy dependencies.
+ * Enable to satisfy dependencies on aes.module.
  */
 
 
