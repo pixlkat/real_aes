@@ -4,7 +4,17 @@
   "type": "drupal-module",
   "license": "GPL-2.0+",
   "homepage": "https://www.drupal.org/project/real_aes",
+  "extra": {
+    "patches": {
+      "defuse/php-encryption": {
+        "Mega-patch to get from v1.2.1 to commit 522859f":
+        "https://github.com/defuse/php-encryption/compare/b87737b2eec06b13f025cabea847338fa203d1b4...522859f0b3f35fe83be5803ede83af3f517bfd5b.diff"
+      }
+    },
+    "enable-patching": true
+  },
   "require": {
-    "defuse/php-encryption": "dev-master"
+    "cweagans/composer-patches": "~1.0",
+    "defuse/php-encryption": "v1.2.1"
   }
 }
